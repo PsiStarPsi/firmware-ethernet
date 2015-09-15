@@ -1,6 +1,6 @@
 [submodule "makeise"]
 	path = makeise
-	url = https://github.com/colinoflynn/makeise
+	url = https://github.com/PsiStarPsi/makeise
 [submodule "ExampleProject/firmware-general"]
 	path = ExampleProject/firmware-general
 	url = https://github.com/PsiStarPsi/firmware-general
