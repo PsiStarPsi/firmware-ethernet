@@ -1,0 +1,3 @@
+[submodule "makeise"]
+	path = makeise
+	url = https://github.com/colinoflynn/makeise
