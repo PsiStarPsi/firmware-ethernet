@@ -121,7 +121,9 @@ architecture Behavioral of EthCore is
    
    signal udpTxDstPort  : Word16Array(NUM_IP_G-1 downto 0);
    
-   -- 
+   signal iUserRxDataValid : slv(NUM_IP_G-1 downto 0);
+   
+   -- For optional endian reversal operations
    signal userTxDataByteOrdered : Word32Array(NUM_IP_G-1 downto 0);
    signal userRxDataByteOrdered : Word32Array(NUM_IP_G-1 downto 0);
    
@@ -409,10 +411,11 @@ begin
             -- UDP payload data interface
             userRxClk       => userClk,
             userRxData      => userRxDataByteOrdered(i),
-            userRxDataValid => userRxDataValid(i),
+            userRxDataValid => iUserRxDataValid(i),
             userRxDataLast  => userRxDataLast(i),
             userRxDataReady => userRxDataReady(i)
          ); 
+         userRxDataValid(i) <= iUserRxDataValid(i);
    end generate;
    
    -- If you last heard from port X, respond to it
@@ -424,7 +427,7 @@ begin
             end loop;
          else 
             for i in NUM_IP_G-1 downto 0 loop
-               if udpRxSrcPort(i) /= udpPorts(i) then
+               if udpRxSrcPort(i) /= udpPorts(i) and iUserRxDataValid(i) = '1' then
                   udpTxDstPort(i) <= udpRxSrcPort(i);
                end if;
             end loop;
