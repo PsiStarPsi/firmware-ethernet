@@ -1,0 +1,109 @@
+# Input file for MakeISE
+
+[ISE Configuration]
+#Generate project configuration
+#You can specify any parameter here which will override the input file 'defaults'
+InputFile = ethernetTemplate.xise.in
+Version = 14.7
+Device Family = Spartan6
+Package = fgg676
+Device = xc6slx150t
+Speed Grade = -3
+#Verilog Include Directories = ../../../hdl|../../../../../openadc/hdl/hdl
+
+[UCF Files]
+#Normally just one UCF file
+projectSrc/scrodEthernetExample.ucf
+
+[Verilog Files]
+#List of verilog source files... by default added for sim + implementation
+
+[VHDL Files]
+#List of VHDL source files... by default added for sim + implementation
+projectSrc/scrodEthernetExample.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseX16To8Mux.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseX8To16Mux.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXAbilityMatch.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXAutoNeg.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXCore.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXMacRx.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXMacTx.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXPkg.vhd
+../Ethernet/1000BASE-X/rtl/Eth1000BaseXRxSync.vhd
+../Ethernet/General/rtl/ArpIpArbiter.vhd
+../Ethernet/General/rtl/ArpPacketRx.vhd
+../Ethernet/General/rtl/ArpPacketTx.vhd
+../Ethernet/General/rtl/ArpResponder.vhd
+../Ethernet/General/rtl/EthCore.vhd
+../Ethernet/General/rtl/EthLayerRx.vhd
+../Ethernet/General/rtl/EthLayerTx.vhd
+../Ethernet/General/rtl/EthRx.vhd
+../Ethernet/General/rtl/EthTx.vhd
+../Ethernet/General/rtl/GigabitEthPkg.vhd
+../Ethernet/General/rtl/IPv4Rx.vhd
+../Ethernet/General/rtl/IPv4Tx.vhd
+../Ethernet/General/rtl/IpV4Arbiter.vhd
+../Ethernet/General/rtl/UdpBufferRx.vhd
+../Ethernet/General/rtl/UdpBufferTx.vhd
+../Ethernet/General/rtl/UdpTxFragmenter.vhd
+../Ethernet/S6/rtl/S6EthTop.vhd
+./firmware-general/General/rtl/CommandInterpreter.vhd
+./firmware-general/General/rtl/CrcPkg.vhd
+./firmware-general/General/rtl/InitRst.vhd
+./firmware-general/General/rtl/SyncBit.vhd
+./firmware-general/General/rtl/TpGenTx.vhd
+./firmware-general/General/rtl/UtilityPkg.vhd
+./firmware-general/Transceivers/S6/GtpS6.vhd
+./firmware-general/Transceivers/S6/GtpS6Tile.vhd
+# Excluding simulation files to avoid cluttering the project
+#../Ethernet/1000BASE-X/sim/CoreAutoNegSim.vhd
+#../Ethernet/1000BASE-X/sim/CoreDataSim.vhd
+#../Ethernet/1000BASE-X/sim/CoreTwoIpDataSim.vhd
+#../Ethernet/General/sim/IPv4Test.vhd
+#../Ethernet/General/sim/TxRxSim.vhd
+#./firmware-general/General/sim/CommandInterpreterTest.vhd
+
+[CoreGen Files]
+#Add XCO files. You can just list the filename, OR have the CoreGen files be
+#auto-generated as well by specifying the section name
+#fifoonly_adcfifo.xco = ADC FIFO CoreGen Setup
+bram8x3000.xco = bram8x3000
+fifo16x64.xco = fifo16x64
+fifo18x16.xco = fifo18x16
+fifo32x512RxAxi.xco = fifo32x512RxAxi
+fifo8x64.xco = fifo8x64
+fifoDist8x16.xco = fifoDist8x16
+udp64kfifo.xco = udp64kfifo
+
+[bram8x3000]
+InputFile = ../Ethernet/General/ipCores/bram8x3000.xco.in
+[fifo16x64]
+InputFile = ../Ethernet/General/ipCores/fifo16x64.xco.in
+[fifo18x16]
+InputFile = ../Ethernet/General/ipCores/fifo18x16.xco.in
+[fifo32x512RxAxi]
+InputFile = ../Ethernet/General/ipCores/fifo32x512RxAxi.xco.in
+[fifo8x64]
+InputFile = ../Ethernet/General/ipCores/fifo8x64.xco.in
+[fifoDist8x16]
+InputFile = ../Ethernet/General/ipCores/fifoDist8x16.xco.in
+[udp64kfifo]
+InputFile = ../Ethernet/General/ipCores/udp64kfifo.xco.in
+
+
+#[ADC FIFO CoreGen Setup]
+#InputFile = fifoonly_adcfifo.xco.in
+#input_depth = 8192
+#output_depth = CALCULATE $input_depth$ / 4
+#full_threshold_assert_value = CALCULATE $input_depth$ - 2
+#full_threshold_negate_value = CALCULATE $input_depth$ - 1
+##These are set to 16-bits for all systems... overkills most of the time
+#write_data_count_width = 16
+#read_data_count_width = 16
+#data_count_width = 16
+
+#[Setup File]
+#AVNET
+#UART_CLK = 40000000
+#UART_BAUD = 512000
+
