@@ -347,6 +347,7 @@ begin
    -- Generate stable reset signal
    U_PwrUpRst : entity work.InitRst
       generic map (
+         RST_CNT_G    => 25000000,
          GATE_DELAY_G => GATE_DELAY_G
       )
       port map (
@@ -356,29 +357,37 @@ begin
    -- Synchronize the reset to the 125 MHz domain
    U_RstSync125 : entity work.SyncBit
       generic map (
-         RST_POL_G    => '1',
+         INIT_STATE_G    => '1',
          GATE_DELAY_G => GATE_DELAY_G
       )
       port map (
          clk      => ethClk125,
-         rst      => ethClk62Rst,
-         asyncBit => '0',
+         rst      => '0',
+         asyncBit => ethClk62Rst,
          syncBit  => ethClk125Rst
       );
    -- Synchronize the reset to the 62 MHz domain
    U_RstSync62 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G    => '1',
+         GATE_DELAY_G => GATE_DELAY_G
+      )
       port map (
          clk      => ethClk125,
-         rst      => fabClkRst,
-         asyncBit => '0',
+         rst      => '0',
+         asyncBit => fabClkRst,
          syncBit  => ethClk62Rst
       );
    -- User reset
    U_RstSyncUser : entity work.SyncBit
+      generic map (
+         INIT_STATE_G    => '1',
+         GATE_DELAY_G => GATE_DELAY_G
+      )
       port map (
          clk      => ethClk125,
-         rst      => ethClk62Rst or not(ethAutoNegDone) or userRstIn,
-         asyncBit => '0',
+         rst      => '0',
+         asyncBit => ethClk62Rst or not(ethAutoNegDone) or userRstIn,
          syncBit  => userRst
       );
 

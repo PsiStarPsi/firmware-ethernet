@@ -106,6 +106,9 @@ BEGIN
          -- 62 MHz clock and reset
          eth62Clk      => eth62Clk,
          eth62Rst      => eth62Rst,
+         -- User clock and reset
+         userClk       => eth125Clk,
+         userRst       => eth125Rst,
          -- Addressing
          macAddr       => aMacAddr,
          ipAddrs       => (0 => aIpAddr),

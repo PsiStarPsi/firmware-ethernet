@@ -337,7 +337,8 @@ begin
             udpDstPort        => udpTxDstPort(i),
             -- Inputs for calculating checksums
             ipSrcAddr         => ipAddrs(i),
-            ipDstAddr         => arpRxSenderIp,
+--            ipDstAddr         => arpRxSenderIp,
+            ipDstAddr         => ipRxSrcAddr,
             -- UDP fragmenter interfaces
             udpData           => udpTxData(i),
             udpDataValid      => udpTxDataValid(i),
@@ -427,7 +428,7 @@ begin
             end loop;
          else 
             for i in NUM_IP_G-1 downto 0 loop
-               if udpRxSrcPort(i) /= udpPorts(i) and iUserRxDataValid(i) = '1' then
+               if udpRxSrcPort(i) /= udpTxDstPort(i) and iUserRxDataValid(i) = '1' then
                   udpTxDstPort(i) <= udpRxSrcPort(i);
                end if;
             end loop;

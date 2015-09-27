@@ -126,7 +126,7 @@ BEGIN
          -- Addressing
          macAddr            => ethCoreMacAddr,
          ipAddrs            => (0 => ethCoreIpAddr, 1 => ch2IpAddr),
-         udpPorts           => (0 => x"07D0", 1 => x"07D1"), --x7D0 = 2000
+         udpPorts           => (0 => x"08D0", 1 => x"08D1"), --x7D0 = 2000
          -- Data to/from GT
          phyRxData          => phyRxLaneIn,
          phyTxData          => phyTxLaneOut,
@@ -150,14 +150,15 @@ BEGIN
 
    U_TpGenTx : entity work.TpGenTx
       generic map (
-         NUM_WORDS_G   => 1000,
-         WAIT_CYCLES_G => 100,
          GATE_DELAY_G  => GATE_DELAY_C
       )
       port map (
          -- User clock and reset
          userClk         => ethClk125,
          userRst         => ethClk125Rst or not(ethAutoNegDone),
+         -- Configuration
+         waitCycles      => conv_std_logic_vector(1000,32),
+         numWords        => conv_std_logic_vector(100,32),
          -- Connection to user logic
          userTxData      => tpData,
          userTxDataValid => tpDataValid,
@@ -167,14 +168,15 @@ BEGIN
 
    U_TpGenTx1 : entity work.TpGenTx
       generic map (
-         NUM_WORDS_G   => 100,
-         WAIT_CYCLES_G => 2500,
          GATE_DELAY_G  => GATE_DELAY_C
       )
       port map (
          -- User clock and reset
          userClk         => ethClk125,
          userRst         => ethClk125Rst or not(ethAutoNegDone),
+         -- Configuration
+         waitCycles      => conv_std_logic_vector(100,32),
+         numWords        => conv_std_logic_vector(2500,32),
          -- Connection to user logic
          userTxData      => tpData1,
          userTxDataValid => tpDataValid1,
