@@ -37,6 +37,7 @@ entity EthTx is
       arpTxReq         : in  sl;
       arpTxAck         : out sl;
       -- Connection to IPv4 interface
+      ipTxDestMac      : in  MacAddrType;
       ipTxData         : in  slv(7 downto 0);
       ipTxDataValid    : in  sl;
       ipTxDataLastByte : in  sl;
@@ -63,6 +64,8 @@ architecture Behavioral of EthTx is
    signal arpTxDataLastByte  : sl;
    signal arpTxDataReady     : sl;
    signal iArpTxAck          : sl;   
+   --
+   signal ethTxDestMac : MacAddrType;
 
 begin
 
@@ -94,7 +97,7 @@ begin
          ethTxClk          => ethClk,
          ethTxRst          => ethRst,
          -- Data for the header
-         ethTxDestMac      => arpTxTargetMac,
+         ethTxDestMac      => ethTxDestMac,
          ethTxSrcMac       => macAddr,
          ethTxEtherType    => ethTxEtherType,
          -- User data to be sent
@@ -162,6 +165,18 @@ begin
          ethTxDataReady    => ethTxDataReady
       );      
    arpTxAck <= iArpTxAck;
+   
+   process(ethClk) begin
+      if rising_edge(ethClk) then
+         if ethRst = '1' then
+            ethTxDestMac <= MAC_ADDR_INIT_C;
+         elsif arpTxDataValid = '1' then
+            ethTxDestMac <= arpTxTargetMac;
+         elsif ipTxDestMac /= MAC_ADDR_INIT_C then
+            ethTxDestMac <= ipTxDestMac;
+         end if;
+      end if;
+   end process;
       
 end Behavioral;
 

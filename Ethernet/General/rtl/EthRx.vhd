@@ -37,6 +37,7 @@ entity EthRx is
       arpRxValid        : out sl;
       -- Connection to upper level IP interface
       ethRxData         : out slv(7 downto 0);
+      ethRxSenderMac    : out MacAddrType;
       ethRxDataValid    : out sl;
       ethRxDataLastByte : out sl
    );
@@ -133,6 +134,7 @@ begin
    ethRxData         <= rawEthRxData      when ethRxEtherType = ETH_TYPE_IPV4_C else (others => '0');
    ethRxDataValid    <= rawEthRxDataValid when ethRxEtherType = ETH_TYPE_IPV4_C else '0';
    ethRxDataLastByte <= rawEthRxDataLast  when ethRxEtherType = ETH_TYPE_IPV4_C else '0';
+   ethRxSenderMac    <= ethRxSrcMac       when ethRxEtherType = ETH_TYPE_IPV4_C else MAC_ADDR_INIT_C;
 
 end Behavioral;
 

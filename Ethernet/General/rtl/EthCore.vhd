@@ -101,6 +101,7 @@ architecture Behavioral of EthCore is
    signal ethRxData      : slv(7 downto 0);
    signal ethRxDataValid : sl;
    signal ethRxDataLast  : sl;
+   signal ethRxSenderMac : MacAddrType;
 
    signal ipRxLength        : slv(15 downto 0);
    signal ipRxId            : slv(15 downto 0);
@@ -169,6 +170,7 @@ begin
          arpTxReq         => arpTxReq,
          arpTxAck         => arpTxAck,
          -- Connection to IPv4 interface
+         ipTxDestMac      => ethRxSenderMac,
          ipTxData         => muxIpTxData,
          ipTxDataValid    => muxIpTxDataValid,
          ipTxDataLastByte => muxIpTxDataLastByte,
@@ -196,6 +198,7 @@ begin
          arpRxValid        => arpRxValid,
          -- Connection to upper level IP interface
          ethRxData         => ethRxData,
+         ethRxSenderMac    => ethRxSenderMac,
          ethRxDataValid    => ethRxDataValid,
          ethRxDataLastByte => ethRxDataLast
       );
@@ -275,7 +278,7 @@ begin
             ipFragOffset      => ipFragOffset(i),
             ipProtocol        => ipProtocol(i),
             ipSrcAddr         => ipAddrs(i),
-            ipDstAddr         => arpTxTargetIp,
+            ipDstAddr         => ipRxSrcAddr,
             -- User data to be sent
             ipData            => ipTxData(i),
             ipDataValid       => ipTxDataValid(i),
@@ -337,7 +340,6 @@ begin
             udpDstPort        => udpTxDstPort(i),
             -- Inputs for calculating checksums
             ipSrcAddr         => ipAddrs(i),
---            ipDstAddr         => arpRxSenderIp,
             ipDstAddr         => ipRxSrcAddr,
             -- UDP fragmenter interfaces
             udpData           => udpTxData(i),
