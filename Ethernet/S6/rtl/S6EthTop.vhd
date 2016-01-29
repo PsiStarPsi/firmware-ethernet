@@ -260,6 +260,9 @@ begin
    -- 2. Assert rxReset and txReset when usrClk, usrClk2 is not stable
    -- 3. txReset should be asserted on tx Buffer over/underflow
    U_RxReset0 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G => '1'
+      )
       port map (
          clk      => fabClk,
          rst      => not(usrClkValid) or not(dcmClkValid),
@@ -268,6 +271,9 @@ begin
       );
    rxReset1 <= rxReset0;
    U_TxReset0 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G => '1'
+      )
       port map (
          clk      => fabClk,
          rst      => not(usrClkValid) or txBufStatus0(1),
@@ -275,6 +281,9 @@ begin
          syncBit  => txReset0
       );
    U_TxReset1 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G => '1'
+      )
       port map (
          clk      => fabClk,
          rst      => not(usrClkValid) or txBufStatus1(1),
@@ -284,6 +293,9 @@ begin
    -- 4. rxBufReset should be asserted on rx buffer over/underflow 
    rxBufError0 <= '1' when rxBufStatus0 = "101" or rxBufStatus0 = "110" else '0';
    U_RxBufReset0 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G => '1'
+      )
       port map (
          clk      => fabClk,
          rst      => rxBufError0, 
@@ -292,6 +304,9 @@ begin
       );
    rxBufError1 <= '1' when rxBufStatus1 = "101" or rxBufStatus1 = "110" else '0';
    U_RxBufReset1 : entity work.SyncBit
+      generic map (
+         INIT_STATE_G => '1'
+      )
       port map (
          clk      => fabClk,
          rst      => rxBufError1, 
